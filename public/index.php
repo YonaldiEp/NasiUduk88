@@ -174,34 +174,34 @@
     </div>
 
     <div id="sidebar"
-        class="fixed top-0 right-0 h-full w-full sm:w-80 lg:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[1100]">
+        class="fixed top-0 right-0 h-full w-full sm:w-80 lg:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[1100] flex flex-col">
 
-        <div class="flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10">
+        <div class="flex-shrink-0 flex items-center justify-between p-4 border-b bg-white">
             <h2 class="text-xl font-semibold">Keranjang</h2>
             <button onclick="closeModal()" class="text-gray-600 hover:text-red-500 text-xl">✖</button>
         </div>
 
-        <div class="overflow-y-auto p-4 h-[calc(100vh-180px)]">
+        <div class="flex-grow overflow-y-auto p-4">
             <div id="cartItems" class="flex flex-col space-y-4">
             </div>
         </div>
 
-        <div class="absolute bottom-0 left-0 w-full bg-white border-t p-4">
+        <div class="flex-shrink-0 bg-white border-t p-4">
             <div class="border border-orange-500 rounded-lg p-4 mb-3">
                 <div class="flex justify-between mb-1">
                     <span>Subtotal</span>
-                    <span id="subtotal">Rp </span>
+                    <span id="subtotal">Rp 0</span>
                 </div>
                 <div class="flex justify-between mb-1">
                     <span>Biaya layanan</span>
-                    <span id="serviceFee">Rp 2.000 </span>
+                    <span id="serviceFee">Rp 2.000</span>
                 </div>
                 <div class="flex justify-between font-bold text-orange-500 text-xl mt-2">
                     <span>Total</span>
-                    <span id="total">Rp </span>
+                    <span id="total">Rp 2.000</span>
                 </div>
             </div>
-            <button id="checkoutBtn"
+            <button
                 class="w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">
                 Checkout
             </button>
