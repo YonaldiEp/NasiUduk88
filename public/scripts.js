@@ -68,35 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-// login
-document.addEventListener('DOMContentLoaded', () => {
-    const btnSignIn = document.getElementById('btn-signin');
-    const btnSignUp = document.getElementById('btn-signup');
-    const formSignIn = document.getElementById('form-signin');
-    const formSignUp = document.getElementById('form-signup');
-
-    // Simple form switching without animation
-    btnSignIn.addEventListener('click', () => {
-        btnSignIn.classList.add('tab-active');
-        btnSignIn.classList.remove('tab-inactive');
-        btnSignUp.classList.add('tab-inactive');
-        btnSignUp.classList.remove('tab-active');
-
-        formSignIn.classList.remove('form-hidden');
-        formSignUp.classList.add('form-hidden');
-    });
-
-    btnSignUp.addEventListener('click', () => {
-        btnSignUp.classList.add('tab-active');
-        btnSignUp.classList.remove('tab-inactive');
-        btnSignIn.classList.add('tab-inactive');
-        btnSignIn.classList.remove('tab-active');
-
-        formSignUp.classList.remove('form-hidden');
-        formSignIn.classList.add('form-hidden');
-    });
-});
 // Ambil data cart dari localStorage jika ada
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
