@@ -59,7 +59,7 @@ $remembered_email = isset($_COOKIE['remember_email']) ? htmlspecialchars($_COOKI
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/Logo_bulat.png" type="image">
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="style.css"> 
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Login Admin</title>
 </head>
@@ -99,6 +99,6 @@ $remembered_email = isset($_COOKIE['remember_email']) ? htmlspecialchars($_COOKI
             <img src="img/ayam.png" alt="Illustration" class="object-cover w-full h-full" />
         </div>
     </div>
-    <script src="js/scripts.js"></script> 
+    <script src="scripts.js"></script> 
 </body>
 </html>

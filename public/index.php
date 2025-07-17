@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/Logo_bulat.png" type="image">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link href='https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css' rel='stylesheet'>
@@ -350,18 +350,17 @@
                     </ul>
                 </div>
 
-                <div>
-                    <h3 class="text-xl font-semibold mb-4">Kirim Pesan
-                        kepada Kami</h3>
-                    <form class="bg-white/30 backdrop-blur-md p-4 rounded-lg space-y-3">
-                        <input type="text" placeholder="Nama Anda"
-                            class="w-full p-2 border border-orange-500 rounded bg-white/30 text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none">
+                                <div>
+                    <h3 class="text-xl font-semibold mb-4">Kirim Pesan kepada Kami</h3>
+                    <form id="contactForm" class="bg-white/30 backdrop-blur-md p-4 rounded-lg space-y-3">
+                        <input type="text" id="nama" placeholder="Nama Anda"
+                            class="w-full p-2 border border-orange-500 rounded bg-white/30 text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none" required>
 
-                        <input type="email" placeholder="Email Anda"
-                            class="w-full p-2 border border-orange-500 rounded bg-white/30 text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none">
+                        <input type="email" id="email" placeholder="Email Anda"
+                            class="w-full p-2 border border-orange-500 rounded bg-white/30 text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none" required>
 
-                        <textarea rows="3" placeholder="Pesan Anda"
-                            class="w-full p-2 border border-orange-500 rounded bg-white/30 text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none"></textarea>
+                        <textarea rows="3" id="pesan" placeholder="Pesan Anda"
+                            class="w-full p-2 border border-orange-500 rounded bg-white/30 text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none" required></textarea>
 
                         <button type="submit"
                             class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition">
@@ -387,7 +386,7 @@
         </div>
     </footer>
 
-    <script src="js/scripts.js"></script>
+    <script src="scripts.js"></script>
 
 </body>
 

@@ -226,4 +226,29 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(whatsappURL, '_blank');
         });
     }
+
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Mencegah submit form default
+
+        const nama = document.getElementById("nama").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const pesan = document.getElementById("pesan").value.trim();
+
+        if (!nama || !email || !pesan) {
+            alert("Semua field harus diisi!");
+            return;
+        }
+
+        // Format pesan email
+        const subject = encodeURIComponent("Pesan dari " + nama);
+        const body = encodeURIComponent(
+            `Nama: ${nama}\nEmail: ${email}\n\nPesan:\n${pesan}`
+        );
+
+        // Ganti alamat email tujuan di bawah ini
+        const tujuan = "nu88brebes@gmail.com";
+
+        // Buka Gmail via mailto
+        window.location.href = `mailto:${tujuan}?subject=${subject}&body=${body}`;
+    });
 });
