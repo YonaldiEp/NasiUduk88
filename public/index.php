@@ -129,51 +129,52 @@
     </div>
 
     <div class="relative h-screen parallax" style="background-image: url('img/ayam.png');" id="menu">
-    <section class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center py-14 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto text-center w-full">
-            <h2 class="text-3xl font-bold text-orange-600 mb-5">🌟 Menu Favorit Kami 🌟</h2>
-            <p class="text-white mb-12">Menu paling laris yang wajib kamu coba!</p>
+        <section class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center py-14 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto text-center w-full">
+                <h2 class="text-3xl font-bold text-orange-600 mb-5">🌟 Menu Favorit Kami 🌟</h2>
+                <p class="text-white mb-12">Menu paling laris yang wajib kamu coba!</p>
 
-            <div class="flex space-x-4 overflow-x-auto pb-4 md:grid md:grid-cols-4 md:gap-6 md:space-x-0 md:overflow-visible">
-                <?php
-                $sql_favorite = "SELECT * FROM menus WHERE visibility = 1 ORDER BY id DESC LIMIT 4";
-                $result_favorite = mysqli_query($conn, $sql_favorite);
+                <div class="flex space-x-4 overflow-x-auto pb-4 md:grid md:grid-cols-4 md:gap-6 md:space-x-0 md:overflow-visible">
+                    <?php
+                    $sql_favorite = "SELECT * FROM menus WHERE visibility = 1 ORDER BY id DESC LIMIT 4";
+                    $result_favorite = mysqli_query($conn, $sql_favorite);
 
-                if (mysqli_num_rows($result_favorite) > 0) {
-                    while ($row = mysqli_fetch_assoc($result_favorite)) {
-                ?>
-                        <div class="bg-white rounded-2xl shadow-lg p-4 flex-shrink-0 w-64 md:w-auto transition hover:scale-105 hover:shadow-xl flex flex-col justify-between">
-                            <div>
-                                <img src="<?php echo !empty($row['foto']) ? 'img/' . htmlspecialchars($row['foto']) : 'img/placeholder.png'; ?>" alt="<?php echo htmlspecialchars($row['nama_menu']); ?>" class="w-full h-40 object-cover rounded-xl mb-4">
-                                <h3 class="text-lg font-semibold text-orange-700"><?php echo htmlspecialchars($row['nama_menu']); ?></h3>
-                                <p class="text-sm text-gray-500 mt-1"><?php echo htmlspecialchars($row['deskripsi']); ?></p>
+                    if (mysqli_num_rows($result_favorite) > 0) {
+                        while ($row = mysqli_fetch_assoc($result_favorite)) {
+                    ?>
+                            <div class="bg-white rounded-2xl shadow-lg p-4 flex-shrink-0 w-64 md:w-auto transition hover:scale-105 hover:shadow-xl flex flex-col justify-between">
+                                <div>
+                                    <img src="<?php echo !empty($row['foto']) ? 'img/' . htmlspecialchars($row['foto']) : 'img/placeholder.png'; ?>" alt="<?php echo htmlspecialchars($row['nama_menu']); ?>" class="w-full h-40 object-cover rounded-xl mb-4">
+                                    <h3 class="text-lg font-semibold text-orange-700"><?php echo htmlspecialchars($row['nama_menu']); ?></h3>
+                                    <p class="text-sm text-gray-500 mt-1"><?php echo htmlspecialchars($row['deskripsi']); ?></p>
+                                </div>
+                                <div class="mt-4 flex justify-between items-center">
+                                    <p class="text-lg font-bold text-yellow-500">Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?></p>
+                                    <button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="mt-4 flex justify-between items-center">
-                               <p class="text-lg font-bold text-yellow-500">Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?></p>
-                               <button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600">
-                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" />
-                                   </svg>
-                               </button>
-                            </div>
-                        </div>
-                <?php
+                    <?php
+                        }
+                    } else {
+                        echo '<p class="text-white text-center col-span-4">Menu favorit akan segera hadir!</p>';
                     }
-                } else {
-                    echo '<p class="text-white text-center col-span-4">Menu favorit akan segera hadir!</p>';
-                }
-                ?>
-            </div> <div class="mt-12 flex justify-center">
-                <a href="menu.php" class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-full transition duration-300">
-                    <i class='bx bx-fork-spoon mr-2 text-xl'></i> Lihat Semua Menu
-                </a>
+                    ?>
+                </div>
+                <div class="mt-12 flex justify-center">
+                    <a href="menu.php" class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-full transition duration-300">
+                        <i class='bx bx-fork-spoon mr-2 text-xl'></i> Lihat Semua Menu
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 
     <div id="sidebar"
-        class="fixed top-0 right-0 h-full w-full sm:w-80 lg:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[1100] overflow-hidden">
+        class="fixed top-0 right-0 h-full w-full sm:w-80 lg:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[1100]">
 
         <div class="flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10">
             <h2 class="text-xl font-semibold">Keranjang</h2>
@@ -182,7 +183,7 @@
 
         <div class="overflow-y-auto p-4 h-[calc(100vh-180px)]">
             <div id="cartItems" class="flex flex-col space-y-4">
-                </div>
+            </div>
         </div>
 
         <div class="absolute bottom-0 left-0 w-full bg-white border-t p-4">
@@ -350,7 +351,7 @@
                     </ul>
                 </div>
 
-                                <div>
+                <div>
                     <h3 class="text-xl font-semibold mb-4">Kirim Pesan kepada Kami</h3>
                     <form id="contactForm" class="bg-white/30 backdrop-blur-md p-4 rounded-lg space-y-3">
                         <input type="text" id="nama" placeholder="Nama Anda"

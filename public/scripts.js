@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             message += `\nTotal: Rp ${total.toLocaleString('id-ID')}`;
 
             const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/6281312844675?text=${encodedMessage}`;
+            const whatsappURL = `https://wa.me/6281252012576?text=${encodedMessage}`;
             window.open(whatsappURL, '_blank');
         });
     }

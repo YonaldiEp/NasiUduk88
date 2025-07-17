@@ -1,6 +1,6 @@
-<?php 
+<?php
 // PERBAIKAN: Menggunakan path absolut untuk menemukan db.php
-include __DIR__ . '/../src/db.php'; 
+include __DIR__ . '/../src/db.php';
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@ include __DIR__ . '/../src/db.php';
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link href='https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css' rel='stylesheet'>
     <title>Menu - Nasi Uduk 88 Brebes Berhias</title>
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg-gray-100">
@@ -75,7 +75,8 @@ include __DIR__ . '/../src/db.php';
 
     <section class="relative h-[650px] bg-fixed bg-center bg-cover"
         style="background-image: url('img/meja makan.png');">
-        <div class="absolute inset-0 bg-black bg-opacity-50"></div> <div class="relative z-10 flex flex-col justify-center items-center text-center text-white h-full px-4">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative z-10 flex flex-col justify-center items-center text-center text-white h-full px-4">
             <h1 class="text-4xl md:text-5xl font-bold text-red-60 0">Menu Nasi Uduk</h1>
             <p class="text-lg md:text-2xl mb-6 max-w-xl">Cita rasa khas Brebes yang menggugah selera, langsung ke meja
                 Anda.</p>
@@ -94,78 +95,78 @@ include __DIR__ . '/../src/db.php';
     <div class="container mx-auto max-w-7xl py-12 px-4">
 
         <div id="minuman" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <?php
-                $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='minuman' ORDER BY id DESC");
-                if($result && mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo '<div class="flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4">';
-                        echo '<div class="flex items-center">';
-                        echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
-                        echo '<div>';
-                        echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
-                        echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
-                        echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'],0,',','.') . '</p>';
-                        echo '</div></div>';
-                        echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
-                        echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
-                        echo '</button>';
-                        echo '</div>';
-                    }
-                } else {
-                    echo '<div class="col-span-3 text-center text-gray-500">Data menu minuman tidak ditemukan.</div>';
+            <?php
+            $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='minuman' ORDER BY id DESC");
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4">';
+                    echo '<div class="flex items-center">';
+                    echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
+                    echo '<div>';
+                    echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
+                    echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
+                    echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
+                    echo '</div></div>';
+                    echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
+                    echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
+                    echo '</button>';
+                    echo '</div>';
                 }
-                ?>
-            </div>
-                <div id="makanan" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <?php
-                $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='makanan' ORDER BY id DESC");
-                if($result && mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo '<div class="flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4">';
-                        echo '<div class="flex items-center">';
-                        echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
-                        echo '<div>';
-                        echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
-                        echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
-                        echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'],0,',','.') . '</p>';
-                        echo '</div></div>';
-                        echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
-                        echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
-                        echo '</button>';
-                        echo '</div>';
-                    }
-                } else {
-                    echo '<div class="col-span-3 text-center text-gray-500">Data menu makanan tidak ditemukan.</div>';
-                }
-                ?>
-            </div>
-                <div id="paket" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <?php
-                $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='paket' ORDER BY id DESC");
-                if($result && mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo '<div class="flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4">';
-                        echo '<div class="flex items-center">';
-                        echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
-                        echo '<div>';
-                        echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
-                        echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
-                        echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'],0,',','.') . '</p>';
-                        echo '</div></div>';
-                        echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
-                        echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
-                        echo '</button>';
-                        echo '</div>';
-                    }
-                } else {
-                    echo '<div class="col-span-3 text-center text-gray-500">Data menu paket tidak ditemukan.</div>';
-                }
-                ?>
-            </div>
+            } else {
+                echo '<div class="col-span-3 text-center text-gray-500">Data menu minuman tidak ditemukan.</div>';
+            }
+            ?>
         </div>
+        <div id="makanan" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php
+            $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='makanan' ORDER BY id DESC");
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4">';
+                    echo '<div class="flex items-center">';
+                    echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
+                    echo '<div>';
+                    echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
+                    echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
+                    echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
+                    echo '</div></div>';
+                    echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
+                    echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
+                    echo '</button>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-span-3 text-center text-gray-500">Data menu makanan tidak ditemukan.</div>';
+            }
+            ?>
+        </div>
+        <div id="paket" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php
+            $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='paket' ORDER BY id DESC");
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4">';
+                    echo '<div class="flex items-center">';
+                    echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
+                    echo '<div>';
+                    echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
+                    echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
+                    echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
+                    echo '</div></div>';
+                    echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
+                    echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
+                    echo '</button>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-span-3 text-center text-gray-500">Data menu paket tidak ditemukan.</div>';
+            }
+            ?>
+        </div>
+    </div>
 
     <div id="sidebar"
-        class="fixed top-0 right-0 h-full w-full sm:w-80 lg:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[1100] overflow-hidden">
+        class="fixed top-0 right-0 h-full w-full sm:w-80 lg:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[1100]">
 
         <div class="flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10">
             <h2 class="text-xl font-semibold">Keranjang</h2>
@@ -174,25 +175,25 @@ include __DIR__ . '/../src/db.php';
 
         <div class="overflow-y-auto p-4 h-[calc(100vh-180px)]">
             <div id="cartItems" class="flex flex-col space-y-4">
-                </div>
+            </div>
         </div>
 
         <div class="absolute bottom-0 left-0 w-full bg-white border-t p-4">
             <div class="border border-orange-500 rounded-lg p-4 mb-3">
                 <div class="flex justify-between mb-1">
                     <span>Subtotal</span>
-                    <span id="subtotal">Rp 0</span>
+                    <span id="subtotal">Rp </span>
                 </div>
                 <div class="flex justify-between mb-1">
                     <span>Biaya layanan</span>
-                    <span id="serviceFee">Rp 2.000</span>
+                    <span id="serviceFee">Rp 2.000 </span>
                 </div>
                 <div class="flex justify-between font-bold text-orange-500 text-xl mt-2">
                     <span>Total</span>
-                    <span id="total">Rp 2.000</span>
+                    <span id="total">Rp </span>
                 </div>
             </div>
-            <button
+            <button id="checkoutBtn"
                 class="w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">
                 Checkout
             </button>
@@ -236,7 +237,7 @@ include __DIR__ . '/../src/db.php';
                     </ul>
                 </div>
 
-                 <div>
+                <div>
                     <h3 class="text-xl font-semibold mb-4">Kirim Pesan kepada Kami</h3>
                     <form id="contactForm" class="bg-white/30 backdrop-blur-md p-4 rounded-lg space-y-3">
                         <input type="text" id="nama" placeholder="Nama Anda"
@@ -270,7 +271,7 @@ include __DIR__ . '/../src/db.php';
             </div>
         </div>
     </footer>
-    <script src="scripts.js"></script> 
+    <script src="scripts.js"></script>
 </body>
 
 </html>

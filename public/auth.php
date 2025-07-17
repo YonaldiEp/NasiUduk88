@@ -27,7 +27,7 @@ if (isset($_POST['signin'])) {
                 if ($remember_me) {
                     setcookie('remember_email', $email, time() + (86400 * 30), "/");
                 } else {
-                    if(isset($_COOKIE['remember_email'])) {
+                    if (isset($_COOKIE['remember_email'])) {
                         setcookie('remember_email', '', time() - 3600, "/");
                     }
                 }
@@ -55,14 +55,16 @@ $remembered_email = isset($_COOKIE['remember_email']) ? htmlspecialchars($_COOKI
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/Logo_bulat.png" type="image">
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Login Admin</title>
 </head>
+
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="flex w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="relative w-full md:w-1/2 p-8">
@@ -70,17 +72,17 @@ $remembered_email = isset($_COOKIE['remember_email']) ? htmlspecialchars($_COOKI
             <div class="flex justify-center mb-6 mt-8">
                 <h1 class="px-4 py-2 text-2xl font-bold text-gray-800">Admin Login</h1>
             </div>
-            
+
             <?php if ($error_message): ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                <?php echo htmlspecialchars($error_message); ?>
-            </div>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                    <?php echo htmlspecialchars($error_message); ?>
+                </div>
             <?php endif; ?>
 
             <form id="form-signin" method="POST" action="auth.php" class="space-y-4">
                 <div>
                     <label class="block text-gray-700">Email address</label>
-                    <input type="email" name="email" placeholder="you@example.com" required class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-orange-700" value="<?php echo $remembered_email; ?>"/>
+                    <input type="email" name="email" placeholder="you@example.com" required class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-orange-700" value="<?php echo $remembered_email; ?>" />
                 </div>
                 <div>
                     <label class="block text-gray-700">Password</label>
@@ -99,6 +101,7 @@ $remembered_email = isset($_COOKIE['remember_email']) ? htmlspecialchars($_COOKI
             <img src="img/ayam.png" alt="Illustration" class="object-cover w-full h-full" />
         </div>
     </div>
-    <script src="scripts.js"></script> 
+    <script src="scripts.js"></script>
 </body>
+
 </html>
