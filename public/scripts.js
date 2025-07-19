@@ -202,30 +202,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const checkoutBtn = document.querySelector('.bg-green-500');
-    if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', () => {
-            if (cart.length === 0) {
-                showToast("Keranjang masih kosong!");
-                return;
-            }
+if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) {
+            showToast("Keranjang masih kosong!");
+            return;
+        }
 
-            let message = `Halo, saya ingin memesan:\n`;
-            cart.forEach(item => {
-                message += `- ${item.name} x${item.qty} = Rp ${item.price * item.qty}\n`;
-            });
+        // --- PASTIKAN NOMOR TELEPON DI SINI SUDAH BENAR ---
+        const phoneNumber = "6281312844675"; // Nomor BARU
 
-            const subtotal = cart.reduce((total, item) => total + item.price * item.qty, 0);
-            const total = subtotal + 2000;
-
-            message += `\nSubtotal: Rp ${subtotal.toLocaleString('id-ID')}`;
-            message += `\nBiaya layanan: Rp 2.000`;
-            message += `\nTotal: Rp ${total.toLocaleString('id-ID')}`;
-
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/6281252012576?text=${encodedMessage}`;
-            window.open(whatsappURL, '_blank');
+        let message = `Halo, saya ingin memesan:\n\n`;
+        cart.forEach(item => {
+            message += `- ${item.name} x${item.qty} = Rp ${item.price * item.qty}\n`;
         });
-    }
+
+        const subtotal = cart.reduce((total, item) => total + item.price * item.qty, 0);
+        const total = subtotal + 2000;
+
+        message += `\nSubtotal: Rp ${subtotal.toLocaleString('id-ID')}`;
+        message += `\nBiaya layanan: Rp 2.000`;
+        message += `\n\nTotal: Rp ${total.toLocaleString('id-ID')}`;
+
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+        window.open(whatsappURL, '_blank');
+    });
+}
 
     document.getElementById("contactForm").addEventListener("submit", function (e) {
         e.preventDefault(); // Mencegah submit form default
