@@ -1,6 +1,5 @@
 <?php
 session_start();
-// PERBAIKAN: Menggunakan path absolut untuk menemukan db.php
 include __DIR__ . '/../src/db.php';
 
 $error_message = '';

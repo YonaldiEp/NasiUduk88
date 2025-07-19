@@ -1,7 +1,4 @@
-<?php
-// PERBAIKAN: Menggunakan path absolut untuk menemukan db.php
-include __DIR__ . '/../src/db.php';
-?>
+<?php include __DIR__ . '/../src/db.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
