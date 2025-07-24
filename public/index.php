@@ -141,20 +141,29 @@
 
                     if (mysqli_num_rows($result_favorite) > 0) {
                         while ($row = mysqli_fetch_assoc($result_favorite)) {
+                            $is_out_of_stock = $row['stock'] <= 0;
+                            $card_classes = $is_out_of_stock ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 hover:shadow-xl';
                     ?>
-                            <div class="bg-white rounded-2xl shadow-lg p-4 flex-shrink-0 w-64 md:w-auto transition hover:scale-105 hover:shadow-xl flex flex-col justify-between">
+                            <div class="product-card bg-white rounded-2xl shadow-lg p-4 flex-shrink-0 w-64 md:w-auto transition flex flex-col justify-between <?php echo $card_classes; ?>" data-stock="<?php echo $row['stock']; ?>">
                                 <div>
                                     <img src="<?php echo !empty($row['foto']) ? 'img/' . htmlspecialchars($row['foto']) : 'img/placeholder.png'; ?>" alt="<?php echo htmlspecialchars($row['nama_menu']); ?>" class="w-full h-40 object-cover rounded-xl mb-4">
                                     <h3 class="text-lg font-semibold text-orange-700"><?php echo htmlspecialchars($row['nama_menu']); ?></h3>
                                     <p class="text-sm text-gray-500 mt-1"><?php echo htmlspecialchars($row['deskripsi']); ?></p>
                                 </div>
                                 <div class="mt-4 flex justify-between items-center">
-                                    <p class="text-lg font-bold text-yellow-500">Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?></p>
+                                    <div>
+                                        <p class="text-lg font-bold text-yellow-500">Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?></p>
+                                        <?php if ($is_out_of_stock) {
+                                            echo '<p class="text-red-500 font-semibold text-sm">Tidak Tersedia</p>';
+                                        }?>
+                                    </div>
+                                    <?php if (!$is_out_of_stock) { ?>
                                     <button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" />
                                         </svg>
                                     </button>
+                                    <?php } ?>
                                 </div>
                             </div>
                     <?php

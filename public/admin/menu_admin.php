@@ -29,6 +29,7 @@ if (isset($_POST['add_menu'])) {
     $description = trim($_POST['description']);
     $category = $_POST['category'];
     $price = intval($_POST['price']);
+    $stock = intval($_POST['stock']); // Ambil nilai stok
     $visibility = intval($_POST['visibility']);
 
     $photo_name_final = ''; // Variabel untuk nama file yang aman
@@ -58,8 +59,8 @@ if (isset($_POST['add_menu'])) {
     // Hanya lanjutkan jika tidak ada error upload
     if (!$upload_error) {
         if ($name && $description && $category && $price > 0) {
-            $stmt = $conn->prepare("INSERT INTO menus (nama_menu, deskripsi, category, harga, visibility, foto) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssids", $name, $description, $category, $price, $visibility, $photo_name_final);
+            $stmt = $conn->prepare("INSERT INTO menus (nama_menu, deskripsi, category, harga, stock, visibility, foto) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssiids", $name, $description, $category, $price, $stock, $visibility, $photo_name_final);
 
             if ($stmt->execute()) {
                 // PERBAIKAN: Alihkan halaman untuk mencegah resubmit saat refresh
@@ -108,11 +109,12 @@ if (isset($_POST['update_menu'])) {
     $description = trim($_POST['description']);
     $category = $_POST['category'];
     $price = intval($_POST['price']);
+    $stock = intval($_POST['stock']); // Ambil nilai stok
     $visibility = intval($_POST['visibility']);
 
-    $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category=?, harga=?, visibility=? WHERE id=?";
-    $types = "sssisi";
-    $params = [$name, $description, $category, $price, $visibility, $id];
+    $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category=?, harga=?, stock=?, visibility=? WHERE id=?";
+    $types = "sssiisi";
+    $params = [$name, $description, $category, $price, $stock, $visibility, $id];
 
     if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] == 0) {
         $tmp = $_FILES['photo']['tmp_name'];
@@ -126,10 +128,10 @@ if (isset($_POST['update_menu'])) {
             $destination = __DIR__ . '/../img/' . $new_photo_name;
 
             if (move_uploaded_file($tmp, $destination)) {
-                $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category=?, harga=?, visibility=?, foto=? WHERE id=?";
-                $types = "sssisisi";
+                $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category=?, harga=?, stock=?, visibility=?, foto=? WHERE id=?";
+                $types = "sssiisisi";
                 // Gunakan nama file baru yang aman
-                $params = [$name, $description, $category, $price, $visibility, $new_photo_name, $id];
+                $params = [$name, $description, $category, $price, $stock, $visibility, $new_photo_name, $id];
             } else {
                 $message = 'Gagal memindahkan file baru!';
             }
@@ -206,13 +208,13 @@ $page_title = 'Kelola Menu';
                 <?php endif; ?>
                 <div class="bg-white p-6 rounded-lg shadow mb-8">
                     <h2 class="text-lg font-semibold mb-4"><?php echo $edit_mode ? 'Edit Menu' : 'Tambah Menu Baru'; ?></h2>
-                    <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 gap-4">
+                    <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                         <?php if ($edit_mode): ?>
                             <input type="hidden" name="id" value="<?php echo $edit_data['id']; ?>">
                         <?php endif; ?>
 
-                        <div>
+                        <div class="md:col-span-2">
                             <label class="block mb-1">Upload Foto Menu</label>
                             <input type="file" name="photo" class="w-full border px-3 py-2 rounded">
                             <?php if ($edit_mode && !empty($edit_data['foto'])) {
@@ -232,6 +234,10 @@ $page_title = 'Kelola Menu';
                             <input type="number" name="price" required placeholder="Harga" value="<?php echo $edit_mode ? $edit_data['harga'] : ''; ?>" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
+                            <label class="block mb-1">Stok</label>
+                            <input type="number" name="stock" required placeholder="Jumlah Stok" value="<?php echo $edit_mode ? $edit_data['stock'] : '0'; ?>" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
                             <label class="block mb-1">Kategori</label>
                             <select name="category" required class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
                                 <option value="">Pilih Kategori</option>
@@ -247,7 +253,7 @@ $page_title = 'Kelola Menu';
                                 <option value="1" <?php if ($edit_mode && $edit_data['visibility'] == 1) echo 'selected'; ?>>Best Seller</option>
                             </select>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="md:col-span-2 flex gap-2">
                             <button type="submit" name="<?php echo $edit_mode ? 'update_menu' : 'add_menu'; ?>" class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700"><?php echo $edit_mode ? 'Update Menu' : 'Simpan Menu'; ?></button>
                             <button type="reset" class="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500">Reset Form</button>
                             <?php if ($edit_mode) {
@@ -263,8 +269,8 @@ $page_title = 'Kelola Menu';
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="border border-gray-300 px-4 py-2">Nama Menu</th>
-                                    <th class="border border-gray-300 px-4 py-2">Deskripsi</th>
                                     <th class="border border-gray-300 px-4 py-2">Harga</th>
+                                    <th class="border border-gray-300 px-4 py-2">Stok</th>
                                     <th class="border border-gray-300 px-4 py-2">Aksi</th>
                                 </tr>
                             </thead>
@@ -277,8 +283,8 @@ $page_title = 'Kelola Menu';
                                     while ($row = mysqli_fetch_assoc($result_bestseller)) {
                                         echo '<tr>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['nama_menu']) . '</td>';
-                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['deskripsi']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['stock']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2 text-center">';
                                         echo '<a href="?edit=' . $row['id'] . '" class="bg-blue-500 text-white px-3 py-1 rounded mr-2 mb-2 inline-block">Edit</a>';
                                         echo '<a href="?delete=' . $row['id'] . '" onclick="return confirm(\'Yakin hapus?\')" class="bg-red-500 text-white px-3 py-1 rounded inline-block">Hapus</a>';
@@ -301,8 +307,8 @@ $page_title = 'Kelola Menu';
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="border border-gray-300 px-4 py-2">Nama Menu</th>
-                                    <th class="border border-gray-300 px-4 py-2">Deskripsi</th>
                                     <th class="border border-gray-300 px-4 py-2">Harga</th>
+                                    <th class="border border-gray-300 px-4 py-2">Stok</th>
                                     <th class="border border-gray-300 px-4 py-2">Aksi</th>
                                 </tr>
                             </thead>
@@ -315,8 +321,8 @@ $page_title = 'Kelola Menu';
                                     while ($row = mysqli_fetch_assoc($result_regular)) {
                                         echo '<tr>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['nama_menu']) . '</td>';
-                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['deskripsi']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['stock']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2 text-center">';
                                         echo '<a href="?edit=' . $row['id'] . '" class="bg-blue-500 text-white px-3 py-1 rounded mr-2 mb-2 inline-block">Edit</a>';
                                         echo '<a href="?delete=' . $row['id'] . '" onclick="return confirm(\'Yakin hapus?\')" class="bg-red-500 text-white px-3 py-1 rounded inline-block">Hapus</a>';
