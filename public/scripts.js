@@ -188,7 +188,7 @@ function showToast(message) {
     toast.className = "fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-[9999] animate-bounce";
     
     // Ganti warna jika pesan error
-    if (message.toLowerCase().includes('habis') || message.toLowerCase().includes('kosong')) {
+    if (message.toLowerCase().includes('habis') || message.toLowerCase().includes('kosong') || message.toLowerCase().includes('gagal') || message.toLowerCase().includes('cukup')) {
         toast.classList.remove('bg-green-500');
         toast.classList.add('bg-red-500');
     }
@@ -199,7 +199,7 @@ function showToast(message) {
     setTimeout(() => {
         toast.classList.add("opacity-0", "transition-opacity", "duration-500");
         setTimeout(() => toast.remove(), 500);
-    }, 2000);
+    }, 3000);
 }
 
 
@@ -223,29 +223,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // --- PASTIKAN NOMOR TELEPON DI SINI SUDAH BENAR ---
-            const phoneNumber = "6281312844675"; // Nomor BARU
+            // Kirim data ke server untuk mengurangi stok
+            fetch('api/process_order.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(cart)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Jika sukses, arahkan ke WhatsApp
+                    window.open(data.whatsapp_url, '_blank');
+                    
+                    // Kosongkan keranjang setelah berhasil
+                    cart = [];
+                    saveCartToLocalStorage();
+                    updateCartUI();
+                    closeModal(); // Tutup sidebar keranjang
 
-            let message = `Halo, saya ingin memesan:\n\n`;
-            cart.forEach(item => {
-                message += `- ${item.name} x${item.qty} = Rp ${item.price * item.qty}\n`;
+                } else {
+                    // Jika gagal, tampilkan pesan error
+                    showToast(data.message || 'Gagal memproses pesanan.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Terjadi kesalahan. Silakan coba lagi.');
             });
-
-            const subtotal = cart.reduce((total, item) => total + item.price * item.qty, 0);
-            const total = subtotal + 2000;
-
-            message += `\nSubtotal: Rp ${subtotal.toLocaleString('id-ID')}`;
-            message += `\nBiaya layanan: Rp 2.000`;
-            message += `\n\nTotal: Rp ${total.toLocaleString('id-ID')}`;
-
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-            window.open(whatsappURL, '_blank');
         });
     }
 
-    document.getElementById("contactForm").addEventListener("submit", function (e) {
+    document.getElementById("contactForm")?.addEventListener("submit", function (e) {
         e.preventDefault(); // Mencegah submit form default
 
         const nama = document.getElementById("nama").value.trim();
