@@ -1,8 +1,9 @@
 <?php
-$host = getenv('DB_HOST') ?: 'localhost';
-$user = getenv('DB_USER') ?: 'root';
-$pass = getenv('DB_PASS') ?: '';
-$db   = getenv('DB_NAME') ?: 'nasiuduk88';
+
+$host = "sgp.domcloud.co"; // <-- Ganti dengan Hostname Anda
+$user = "nasiuduk88";      // <-- Ganti dengan Nama pengguna Anda
+$pass = "iAsg2wB+U2D(Tt382)";  // <-- GANTI DENGAN KATA SANDI MYSQL ANDA
+$db   = "nasiuduk88_db";   // <-- Nama database sudah benar
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
