@@ -5,6 +5,14 @@ session_start();
 include __DIR__ . '/../../src/db.php';
 $message = '';
 
+// Pastikan hanya admin yang bisa mengakses halaman ini
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../auth.php");
+    exit();
+}
+
+$current_user_id = $_SESSION['user_id'];
+
 // Menangkap status dari URL setelah redirect untuk menampilkan notifikasi
 if (isset($_GET['status'])) {
     if ($_GET['status'] == 'add_success') {
@@ -23,17 +31,20 @@ if (isset($_GET['status'])) {
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $conn->set_charset("utf8mb4");
 
+// Ambil semua kategori untuk dropdown
+$categories_result = $conn->query("SELECT * FROM categories ORDER BY nama_kategori ASC");
+
 // Proses tambah menu
 if (isset($_POST['add_menu'])) {
     $name = trim($_POST['name']);
     $description = trim($_POST['description']);
-    $category = $_POST['category'];
+    $category_id = intval($_POST['category_id']);
     $price = intval($_POST['price']);
-    $stock = intval($_POST['stock']); // Ambil nilai stok
+    $stock = intval($_POST['stock']);
     $visibility = intval($_POST['visibility']);
 
-    $photo_name_final = ''; // Variabel untuk nama file yang aman
-    $upload_error = false; // Flag untuk error upload
+    $photo_name_final = '';
+    $upload_error = false;
 
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
         $tmp = $_FILES['photo']['tmp_name'];
@@ -42,7 +53,6 @@ if (isset($_POST['add_menu'])) {
         $allowed = ['jpg', 'jpeg', 'png', 'gif'];
 
         if (in_array($ext, $allowed)) {
-            // Buat nama file unik dan aman
             $photo_name_final = 'menu_' . time() . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
             $destination = __DIR__ . '/../img/' . $photo_name_final;
 
@@ -56,14 +66,12 @@ if (isset($_POST['add_menu'])) {
         }
     }
 
-    // Hanya lanjutkan jika tidak ada error upload
     if (!$upload_error) {
-        if ($name && $description && $category && $price > 0) {
-            $stmt = $conn->prepare("INSERT INTO menus (nama_menu, deskripsi, category, harga, stock, visibility, foto) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssiids", $name, $description, $category, $price, $stock, $visibility, $photo_name_final);
+        if ($name && $description && $category_id > 0 && $price > 0) {
+            $stmt = $conn->prepare("INSERT INTO menus (nama_menu, deskripsi, category_id, harga, stock, visibility, foto, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssiiissi", $name, $description, $category_id, $price, $stock, $visibility, $photo_name_final, $current_user_id);
 
             if ($stmt->execute()) {
-                // PERBAIKAN: Alihkan halaman untuk mencegah resubmit saat refresh
                 header("Location: menu_admin.php?status=add_success");
                 exit();
             } else {
@@ -80,7 +88,6 @@ if (isset($_GET['delete'])) {
     $stmt = $conn->prepare("DELETE FROM menus WHERE id=?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
-        // PERBAIKAN: Alihkan halaman untuk konsistensi dan UX yang lebih baik
         header("Location: menu_admin.php?status=delete_success");
         exit();
     } else {
@@ -107,14 +114,14 @@ if (isset($_POST['update_menu'])) {
     $id = intval($_POST['id']);
     $name = trim($_POST['name']);
     $description = trim($_POST['description']);
-    $category = $_POST['category'];
+    $category_id = intval($_POST['category_id']);
     $price = intval($_POST['price']);
-    $stock = intval($_POST['stock']); // Ambil nilai stok
+    $stock = intval($_POST['stock']);
     $visibility = intval($_POST['visibility']);
 
-    $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category=?, harga=?, stock=?, visibility=? WHERE id=?";
-    $types = "sssiisi";
-    $params = [$name, $description, $category, $price, $stock, $visibility, $id];
+    $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category_id=?, harga=?, stock=?, visibility=?, user_id=? WHERE id=?";
+    $types = "ssiiisii";
+    $params = [$name, $description, $category_id, $price, $stock, $visibility, $current_user_id, $id];
 
     if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] == 0) {
         $tmp = $_FILES['photo']['tmp_name'];
@@ -123,15 +130,13 @@ if (isset($_POST['update_menu'])) {
         $allowed = ['jpg', 'jpeg', 'png', 'gif'];
 
         if (in_array($ext, $allowed)) {
-            // PERBAIKAN KEAMANAN: Buat nama file baru yang aman, jangan gunakan nama asli
             $new_photo_name = 'menu_' . time() . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
             $destination = __DIR__ . '/../img/' . $new_photo_name;
 
             if (move_uploaded_file($tmp, $destination)) {
-                $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category=?, harga=?, stock=?, visibility=?, foto=? WHERE id=?";
-                $types = "sssiisisi";
-                // Gunakan nama file baru yang aman
-                $params = [$name, $description, $category, $price, $stock, $visibility, $new_photo_name, $id];
+                $sql = "UPDATE menus SET nama_menu=?, deskripsi=?, category_id=?, harga=?, stock=?, visibility=?, foto=?, user_id=? WHERE id=?";
+                $types = "ssiiisisi";
+                $params = [$name, $description, $category_id, $price, $stock, $visibility, $new_photo_name, $current_user_id, $id];
             } else {
                 $message = 'Gagal memindahkan file baru!';
             }
@@ -144,7 +149,6 @@ if (isset($_POST['update_menu'])) {
     $stmt->bind_param($types, ...$params);
 
     if ($stmt->execute()) {
-        // Redirect yang sudah ada, ini sudah benar
         header("Location: menu_admin.php?status=update_success");
         exit();
     } else {
@@ -239,11 +243,13 @@ $page_title = 'Kelola Menu';
                         </div>
                         <div>
                             <label class="block mb-1">Kategori</label>
-                            <select name="category" required class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
+                            <select name="category_id" required class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
                                 <option value="">Pilih Kategori</option>
-                                <option value="minuman" <?php if ($edit_mode && $edit_data['category'] == 'minuman') echo 'selected'; ?>>Minuman</option>
-                                <option value="makanan" <?php if ($edit_mode && $edit_data['category'] == 'makanan') echo 'selected'; ?>>Makanan</option>
-                                <option value="paket" <?php if ($edit_mode && $edit_data['category'] == 'paket') echo 'selected'; ?>>Paket</option>
+                                <?php while ($category = $categories_result->fetch_assoc()): ?>
+                                    <option value="<?php echo $category['id']; ?>" <?php if ($edit_mode && $edit_data['category_id'] == $category['id']) echo 'selected'; ?>>
+                                        <?php echo htmlspecialchars($category['nama_kategori']); ?>
+                                    </option>
+                                <?php endwhile; ?>
                             </select>
                         </div>
                         <div>
@@ -262,6 +268,7 @@ $page_title = 'Kelola Menu';
                         </div>
                     </form>
                 </div>
+
                 <div class="bg-white p-6 rounded-lg shadow mb-8">
                     <h3 class="text-lg font-semibold mb-4">Daftar Menu Best Seller</h3>
                     <div class="overflow-x-auto">

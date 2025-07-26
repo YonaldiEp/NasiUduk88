@@ -81,107 +81,64 @@
         </div>
     </section>
 
+    <?php
+    $categories_result = mysqli_query($conn, "SELECT * FROM categories ORDER BY id ASC");
+    $first_category = true;
+    ?>
     <nav class="mt-6" id="menu">
         <ul class="flex justify-center space-x-8 border-b-2 border-gray-200 overflow-x-auto pb-2">
-            <li class="tab-item text-green-500 border-b-2 border-green-500 pb-2 px-1 whitespace-nowrap cursor-pointer" onclick="switchTab('minuman', this)">Minuman</li>
-            <li class="tab-item text-gray-500 pb-2 px-1 whitespace-nowrap cursor-pointer" onclick="switchTab('makanan', this)">Makanan</li>
-            <li class="tab-item text-gray-500 pb-2 px-1 whitespace-nowrap cursor-pointer" onclick="switchTab('paket', this)">Menu Paket</li>
+            <?php while ($category = mysqli_fetch_assoc($categories_result)) : ?>
+                <li class="tab-item <?php echo $first_category ? 'text-green-500 border-b-2 border-green-500' : 'text-gray-500'; ?> pb-2 px-1 whitespace-nowrap cursor-pointer" onclick="switchTab('category-<?php echo $category['id']; ?>', this)">
+                    <?php echo htmlspecialchars($category['nama_kategori']); ?>
+                </li>
+                <?php $first_category = false; ?>
+            <?php endwhile; ?>
         </ul>
     </nav>
 
     <div class="container mx-auto max-w-7xl py-12 px-4">
 
-        <div id="minuman" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php
-            $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='minuman' ORDER BY id DESC");
-            if ($result && mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $is_out_of_stock = $row['stock'] <= 0;
-                    $card_classes = $is_out_of_stock ? 'opacity-50 cursor-not-allowed' : '';
-                    echo '<div class="product-card flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4 ' . $card_classes . '" data-stock="' . $row['stock'] . '">';
-                    echo '<div class="flex items-center">';
-                    echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
-                    echo '<div>';
-                    echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
-                    echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
-                    echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
-                     if ($is_out_of_stock) {
-                        echo '<p class="text-red-500 font-semibold text-sm mt-1">Tidak Tersedia</p>';
+        <?php
+        mysqli_data_seek($categories_result, 0); // Reset pointer
+        $first_category = true;
+        while ($category = mysqli_fetch_assoc($categories_result)) :
+            $category_id = $category['id'];
+            $visibility_class = $first_category ? '' : 'hidden';
+        ?>
+            <div id="category-<?php echo $category_id; ?>" class="tab-content <?php echo $visibility_class; ?> grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php
+                $menu_result = mysqli_query($conn, "SELECT * FROM menus WHERE category_id=$category_id ORDER BY id DESC");
+                if ($menu_result && mysqli_num_rows($menu_result) > 0) {
+                    while ($row = mysqli_fetch_assoc($menu_result)) {
+                        $is_out_of_stock = $row['stock'] <= 0;
+                        $card_classes = $is_out_of_stock ? 'opacity-50 cursor-not-allowed' : '';
+                        echo '<div class="product-card flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4 ' . $card_classes . '" data-stock="' . $row['stock'] . '">';
+                        echo '<div class="flex items-center">';
+                        echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
+                        echo '<div>';
+                        echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
+                        echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
+                        echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
+                        if ($is_out_of_stock) {
+                            echo '<p class="text-red-500 font-semibold text-sm mt-1">Tidak Tersedia</p>';
+                        }
+                        echo '</div></div>';
+                        if (!$is_out_of_stock) {
+                            echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
+                            echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
+                            echo '</button>';
+                        }
+                        echo '</div>';
                     }
-                    echo '</div></div>';
-                    if (!$is_out_of_stock) {
-                        echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
-                        echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
-                        echo '</button>';
-                    }
-                    echo '</div>';
+                } else {
+                    echo '<div class="col-span-full text-center text-gray-500">Data menu ' . strtolower(htmlspecialchars($category['nama_kategori'])) . ' tidak ditemukan.</div>';
                 }
-            } else {
-                echo '<div class="col-span-3 text-center text-gray-500">Data menu minuman tidak ditemukan.</div>';
-            }
-            ?>
-        </div>
-        <div id="makanan" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php
-            $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='makanan' ORDER BY id DESC");
-            if ($result && mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $is_out_of_stock = $row['stock'] <= 0;
-                    $card_classes = $is_out_of_stock ? 'opacity-50 cursor-not-allowed' : '';
-                    echo '<div class="product-card flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4 ' . $card_classes . '" data-stock="' . $row['stock'] . '">';
-                    echo '<div class="flex items-center">';
-                    echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
-                    echo '<div>';
-                    echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
-                    echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
-                    echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
-                    if ($is_out_of_stock) {
-                        echo '<p class="text-red-500 font-semibold text-sm mt-1">Tidak Tersedia</p>';
-                    }
-                    echo '</div></div>';
-                     if (!$is_out_of_stock) {
-                        echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
-                        echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
-                        echo '</button>';
-                    }
-                    echo '</div>';
-                }
-            } else {
-                echo '<div class="col-span-3 text-center text-gray-500">Data menu makanan tidak ditemukan.</div>';
-            }
-            ?>
-        </div>
-        <div id="paket" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php
-            $result = mysqli_query($conn, "SELECT * FROM menus WHERE category='paket' ORDER BY id DESC");
-            if ($result && mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $is_out_of_stock = $row['stock'] <= 0;
-                    $card_classes = $is_out_of_stock ? 'opacity-50 cursor-not-allowed' : '';
-                    echo '<div class="product-card flex items-center justify-between bg-white shadow-lg p-6 rounded-lg gap-4 ' . $card_classes . '" data-stock="' . $row['stock'] . '">';
-                    echo '<div class="flex items-center">';
-                    echo '<img src="img/' . htmlspecialchars($row['foto']) . '" alt="' . htmlspecialchars($row['nama_menu']) . '" class="w-12 h-12 rounded-full mr-4 object-cover" />';
-                    echo '<div>';
-                    echo '<h2 class="text-lg font-semibold text-gray-800">' . htmlspecialchars($row['nama_menu']) . '</h2>';
-                    echo '<p class="text-sm text-gray-600">' . htmlspecialchars($row['deskripsi']) . '</p>';
-                    echo '<p class="text-yellow-500 font-bold mt-1">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
-                     if ($is_out_of_stock) {
-                        echo '<p class="text-red-500 font-semibold text-sm mt-1">Tidak Tersedia</p>';
-                    }
-                    echo '</div></div>';
-                    if (!$is_out_of_stock) {
-                        echo '<button class="add-to-cart bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600 transition">';
-                        echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100 4 2 2 0 000-4z" /></svg>';
-                        echo '</button>';
-                    }
-                    echo '</div>';
-                }
-            } else {
-                echo '<div class="col-span-3 text-center text-gray-500">Data menu paket tidak ditemukan.</div>';
-            }
-            ?>
-        </div>
+                ?>
+            </div>
+            <?php $first_category = false; ?>
+        <?php endwhile; ?>
     </div>
+
 
     <div id="sidebar"
         class="fixed top-0 right-0 h-full w-full sm:w-80 lg:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[1100] flex flex-col">

@@ -10,63 +10,35 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-// TABS: Ganti tab menu
-window.switchTab = function (tabId, event) {
-    const sections = ['minuman', 'makanan', 'paket'];
-
-    sections.forEach(id => {
-        const section = document.getElementById(id);
-        if (section) {
-            section.classList.add('hidden');
-        }
+// TABS: Ganti tab menu (FUNGSI BARU YANG SUDAH DIPERBAIKI)
+window.switchTab = function (tabId) {
+    // 1. Sembunyikan semua panel konten
+    const contentPanels = document.querySelectorAll('.tab-content');
+    contentPanels.forEach(panel => {
+        panel.classList.add('hidden');
     });
 
-    const targetSection = document.getElementById(tabId);
-    if (targetSection) {
-        targetSection.classList.remove('hidden');
+    // 2. Tampilkan panel yang dituju
+    const targetPanel = document.getElementById(tabId);
+    if (targetPanel) {
+        targetPanel.classList.remove('hidden');
     }
 
-    document.querySelectorAll('.tab-item').forEach(el => {
-        el.classList.remove('text-green-500', 'border-green-500', 'border-b-2');
-        el.classList.add('text-gray-500', 'border-transparent');
+    // 3. Atur style untuk semua tab (tombol)
+    const tabItems = document.querySelectorAll('.tab-item');
+    tabItems.forEach(tab => {
+        tab.classList.remove('text-green-500', 'border-green-500', 'border-b-2');
+        tab.classList.add('text-gray-500', 'border-transparent');
     });
-
-    if (event?.target) {
-        event.target.classList.add("text-green-500", "border-b-2", "border-green-500");
+    
+    // 4. Atur style untuk tab yang aktif
+    const activeTab = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
+    if(activeTab) {
+        activeTab.classList.add("text-green-500", "border-b-2", "border-green-500");
+        activeTab.classList.remove('text-gray-500', 'border-transparent');
     }
 };
-// tab-control.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    const tabItems = document.querySelectorAll('.tab-item');
-    const sections = ['minuman', 'makanan', 'paket'];
-
-    tabItems.forEach(tab => {
-        tab.addEventListener('click', () => {
-            // Hapus aktif dari semua tab
-            tabItems.forEach(item => {
-                item.classList.remove('text-green-500', 'border-b-2', 'border-green-500');
-                item.classList.add('text-gray-500');
-            });
-
-            // Aktifkan tab yang diklik
-            tab.classList.remove('text-gray-500');
-            tab.classList.add('text-green-500', 'border-b-2', 'border-green-500');
-
-            // Sembunyikan semua section
-            sections.forEach(id => {
-                const section = document.getElementById(id);
-                if (section) section.classList.add('hidden');
-            });
-
-            // Tampilkan section sesuai tab
-            const targetId = tab.getAttribute('onclick').match(/'([^']+)'/)[1];
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) targetSection.classList.remove('hidden');
-        });
-    });
-});
 
 // Ambil data cart dari localStorage jika ada
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
