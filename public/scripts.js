@@ -7,11 +7,22 @@ document.addEventListener('DOMContentLoaded', function () {
             mobileMenu.classList.toggle('hidden');
         });
     }
+
+    // --- Kode BARU untuk menu mobile di halaman ADMIN ---
+    const adminMenuToggle = document.getElementById('menu-toggle');
+    const adminSidebar = document.getElementById('sidebar');
+
+    if (adminMenuToggle && adminSidebar) {
+        adminMenuToggle.addEventListener('click', () => {
+            adminSidebar.classList.toggle('-translate-x-full');
+        });
+    }
+    // --- Akhir dari Kode BARU ---
 });
 
 
 // TABS: Ganti tab menu (FUNGSI BARU YANG SUDAH DIPERBAIKI)
-window.switchTab = function (tabId) {
+window.switchTab = function (tabId, element) {
     // 1. Sembunyikan semua panel konten
     const contentPanels = document.querySelectorAll('.tab-content');
     contentPanels.forEach(panel => {
@@ -32,10 +43,9 @@ window.switchTab = function (tabId) {
     });
     
     // 4. Atur style untuk tab yang aktif
-    const activeTab = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
-    if(activeTab) {
-        activeTab.classList.add("text-green-500", "border-b-2", "border-green-500");
-        activeTab.classList.remove('text-gray-500', 'border-transparent');
+    if(element) {
+        element.classList.add("text-green-500", "border-b-2", "border-green-500");
+        element.classList.remove('text-gray-500', 'border-transparent');
     }
 };
 
@@ -48,11 +58,17 @@ function saveCartToLocalStorage() {
 }
 
 function openModal() {
-    document.getElementById('sidebar').classList.remove('translate-x-full');
+    const sidebar = document.getElementById('sidebar');
+    if(sidebar){
+        sidebar.classList.remove('translate-x-full');
+    }
 }
 
 function closeModal() {
-    document.getElementById('sidebar').classList.add('translate-x-full');
+    const sidebar = document.getElementById('sidebar');
+    if(sidebar){
+        sidebar.classList.add('translate-x-full');
+    }
 }
 
 function formatRupiah(number) {
@@ -61,6 +77,8 @@ function formatRupiah(number) {
 
 function updateCartUI() {
     const cartItemsContainer = document.getElementById('cartItems');
+    if (!cartItemsContainer) return; // Keluar jika elemen tidak ada
+
     cartItemsContainer.innerHTML = '';
 
     let subtotal = 0;
@@ -88,12 +106,19 @@ function updateCartUI() {
     });
 
     const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-    document.getElementById('cartCount').textContent = totalItems;
-    document.getElementById('cartCountMobile').textContent = totalItems;
+    
+    const cartCountEl = document.getElementById('cartCount');
+    if(cartCountEl) cartCountEl.textContent = totalItems;
+
+    const cartCountMobileEl = document.getElementById('cartCountMobile');
+    if(cartCountMobileEl) cartCountMobileEl.textContent = totalItems;
 
     const serviceFee = 2000;
-    document.getElementById('subtotal').textContent = formatRupiah(subtotal);
-    document.getElementById('total').textContent = formatRupiah(subtotal + serviceFee);
+    const subtotalEl = document.getElementById('subtotal');
+    if(subtotalEl) subtotalEl.textContent = formatRupiah(subtotal);
+
+    const totalEl = document.getElementById('total');
+    if(totalEl) totalEl.textContent = formatRupiah(subtotal + serviceFee);
 
     saveCartToLocalStorage();
 }
@@ -251,4 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Buka Gmail via mailto
         window.location.href = `mailto:${tujuan}?subject=${subject}&body=${body}`;
     });
+
+    // Panggil switchTab untuk tab pertama saat halaman dimuat
+    const firstTab = document.querySelector('.tab-item');
+    if(firstTab){
+        const firstTabId = firstTab.getAttribute('onclick').match(/'([^']+)'/)[1];
+        switchTab(firstTabId, firstTab);
+    }
 });

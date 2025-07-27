@@ -173,7 +173,7 @@ $page_title = 'Kelola Menu';
 
 <body class="bg-gray-100 text-gray-800">
     <div class="flex min-h-screen">
-        <aside class="sidebar w-64 bg-blue-900 text-white fixed top-0 left-0 h-full flex flex-col">
+        <aside id="sidebar" class="sidebar w-64 bg-blue-900 text-white fixed top-0 left-0 h-full flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-20">
             <div class="p-5 text-lg font-bold border-b border-blue-700">Admin Nasi Uduk 88</div>
             <nav class="mt-4 flex-grow space-y-1">
                 <a href="admin.php" class="flex items-center py-2 px-4 hover:bg-blue-700"><i class='bx bx-home-alt text-2xl mr-3'></i><span class="text-base">Beranda</span></a>
@@ -182,11 +182,13 @@ $page_title = 'Kelola Menu';
             </nav>
             <a href="logout.php" class="flex items-center py-2 px-4 hover:bg-blue-700 mt-auto"><i class='bx bx-log-out text-2xl mr-3'></i><span class="text-base">Logout</span></a>
         </aside>
-        <div class="flex-1 ml-64 flex flex-col">
-            <header class="bg-white shadow fixed top-0 left-64 right-0 z-10 flex items-center justify-between px-6 py-4">
+        <div id="main-content" class="flex-1 md:ml-64 flex flex-col transition-all duration-300 ease-in-out">
+            <header class="bg-white shadow fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-6 py-4">
                 <div class="flex items-center">
-                    <i class='bx bx-menu text-3xl mr-4 text-gray-600'></i>
-                    <div class="text-gray-700 text-lg font-semibold"><?php echo $page_title; ?></div>
+                    <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-gray-800">
+                        <i class='bx bx-menu text-3xl'></i>
+                    </button>
+                    <div class="hidden md:block text-gray-700 text-lg font-semibold ml-4"><?php echo $page_title; ?></div>
                 </div>
                 <div class="flex-grow flex justify-center">
                     <form method="get" class="w-full max-w-md flex">
@@ -245,6 +247,7 @@ $page_title = 'Kelola Menu';
                             <label class="block mb-1">Kategori</label>
                             <select name="category_id" required class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
                                 <option value="">Pilih Kategori</option>
+                                <?php mysqli_data_seek($categories_result, 0); ?>
                                 <?php while ($category = $categories_result->fetch_assoc()): ?>
                                     <option value="<?php echo $category['id']; ?>" <?php if ($edit_mode && $edit_data['category_id'] == $category['id']) echo 'selected'; ?>>
                                         <?php echo htmlspecialchars($category['nama_kategori']); ?>
@@ -344,10 +347,9 @@ $page_title = 'Kelola Menu';
                         </table>
                     </div>
                 </div>
-
             </main>
         </div>
     </div>
+    <script src="../scripts.js"></script>
 </body>
-
 </html>
