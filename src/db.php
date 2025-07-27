@@ -1,9 +1,9 @@
 <?php
 
-$host = "sgp.domcloud.co"; // <-- Ganti dengan Hostname Anda
-$user = "nasiuduk88";      // <-- Ganti dengan Nama pengguna Anda
-$pass = "y_BK2b+q14bgUVX)82";  // <-- GANTI DENGAN KATA SANDI MYSQL ANDA
-$db   = "nasiuduk88_db";   // <-- Nama database sudah benar
+$host = "localhost";
+$user = "root";      
+$pass = "";         
+$db   = "nasiuduk88";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
