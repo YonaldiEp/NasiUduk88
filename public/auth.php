@@ -97,7 +97,7 @@ $remembered_email = isset($_COOKIE['remember_email']) ? htmlspecialchars($_COOKI
             </form>
         </div>
         <div class="hidden md:block md:w-1/2 bg-orange-700">
-            <img src="img/ayam.png" alt="Illustration" class="object-cover w-full h-full" />
+            <img src="img/nasiudukbanner.png" alt="Illustration" class="object-cover w-full h-full" />
         </div>
     </div>
     <script src="scripts.js"></script>
