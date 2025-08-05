@@ -218,8 +218,8 @@ $page_title = 'Kelola Menu';
 
                         <?php if ($edit_mode): ?>
                             <div>
-                                <label class="block mb-1">User Id</label>
-                                <input type="text" name="id" required placeholder="Masukkan Id" value="<?php echo $edit_mode ? htmlspecialchars($edit_data['id']) : ''; ?>" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
+                                <label class="block mb-1">Menu Id</label>
+                                <input type="text" name="id" readonly required placeholder="ID Menu" value="<?php echo $edit_mode ? htmlspecialchars($edit_data['id']) : ''; ?>" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500 bg-gray-100">
                             </div>
                         <?php endif; ?>
 
@@ -297,8 +297,8 @@ $page_title = 'Kelola Menu';
                                 if (mysqli_num_rows($result_bestseller) > 0) {
                                     while ($row = mysqli_fetch_assoc($result_bestseller)) {
                                         echo '<tr>';
-                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['user_id']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['id']) . '</td>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['user_id']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['nama_menu']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['stock']) . '</td>';
@@ -339,8 +339,8 @@ $page_title = 'Kelola Menu';
                                 if (mysqli_num_rows($result_regular) > 0) {
                                     while ($row = mysqli_fetch_assoc($result_regular)) {
                                         echo '<tr>';
-                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['user_id']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['id']) . '</td>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['user_id']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['nama_menu']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['stock']) . '</td>';
