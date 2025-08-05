@@ -1,9 +1,9 @@
 <?php
 
-$host = "sgp.domcloud.co";
+$host = "localhost";
 $user = "nasiuduk88";
-$pass = "xsJ2VR6++J1zcN81-a";
-$db   = "nasiuduk88_db";
+$pass = "";
+$db   = "nasiuduk88";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
