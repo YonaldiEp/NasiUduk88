@@ -281,7 +281,7 @@ $page_title = 'Kelola Menu';
                         <table class="w-full border-collapse border border-gray-200">
                             <thead>
                                 <tr class="bg-gray-100">
-                                    <th class="border border-gray-300 px-4 py-2">Id User</th>
+                                    <th class="border border-gray-300 px-4 py-2">Id Menu</th>
                                     <th class="border border-gray-300 px-4 py-2">Nama Menu</th>
                                     <th class="border border-gray-300 px-4 py-2">Harga</th>
                                     <th class="border border-gray-300 px-4 py-2">Stok</th>
