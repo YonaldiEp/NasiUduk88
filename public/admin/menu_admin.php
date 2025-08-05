@@ -223,11 +223,6 @@ $page_title = 'Kelola Menu';
                             </div>
                         <?php endif; ?>
 
-                        <div>
-                            <label class="block mb-1">User Id</label>
-                            <input type="text" name="id" required placeholder="Masukkan Id" value="<?php echo $edit_mode ? htmlspecialchars($edit_data['id']) : ''; ?>" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
-                        </div>
-
                         <div class="md:col-span-2">
                             <label class="block mb-1">Upload Foto Menu</label>
                             <input type="file" name="photo" class="w-full border px-3 py-2 rounded">
@@ -286,6 +281,7 @@ $page_title = 'Kelola Menu';
                         <table class="w-full border-collapse border border-gray-200">
                             <thead>
                                 <tr class="bg-gray-100">
+                                    <th class="border border-gray-300 px-4 py-2">Id User</th>
                                     <th class="border border-gray-300 px-4 py-2">Nama Menu</th>
                                     <th class="border border-gray-300 px-4 py-2">Harga</th>
                                     <th class="border border-gray-300 px-4 py-2">Stok</th>
@@ -300,6 +296,7 @@ $page_title = 'Kelola Menu';
                                 if (mysqli_num_rows($result_bestseller) > 0) {
                                     while ($row = mysqli_fetch_assoc($result_bestseller)) {
                                         echo '<tr>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['id']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['nama_menu']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['stock']) . '</td>';
