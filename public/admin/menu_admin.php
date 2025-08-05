@@ -282,6 +282,7 @@ $page_title = 'Kelola Menu';
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="border border-gray-300 px-4 py-2">Id Menu</th>
+                                    <th class="border border-gray-300 px-4 py-2">Id User</th>
                                     <th class="border border-gray-300 px-4 py-2">Nama Menu</th>
                                     <th class="border border-gray-300 px-4 py-2">Harga</th>
                                     <th class="border border-gray-300 px-4 py-2">Stok</th>
@@ -297,6 +298,7 @@ $page_title = 'Kelola Menu';
                                     while ($row = mysqli_fetch_assoc($result_bestseller)) {
                                         echo '<tr>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['id']) . '</td>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['user_id']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['nama_menu']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['stock']) . '</td>';
@@ -307,7 +309,7 @@ $page_title = 'Kelola Menu';
                                         echo '</tr>';
                                     }
                                 } else {
-                                    echo '<tr><td colspan="4" class="text-center py-4">Tidak ada menu best seller.</td></tr>';
+                                    echo '<tr><td colspan="6" class="text-center py-4">Tidak ada menu best seller.</td></tr>';
                                 }
                                 ?>
                             </tbody>
@@ -321,6 +323,8 @@ $page_title = 'Kelola Menu';
                         <table class="w-full border-collapse border border-gray-200">
                             <thead>
                                 <tr class="bg-gray-100">
+                                    <th class="border border-gray-300 px-4 py-2">Id Menu</th>
+                                    <th class="border border-gray-300 px-4 py-2">Id User</th>
                                     <th class="border border-gray-300 px-4 py-2">Nama Menu</th>
                                     <th class="border border-gray-300 px-4 py-2">Harga</th>
                                     <th class="border border-gray-300 px-4 py-2">Stok</th>
@@ -335,6 +339,8 @@ $page_title = 'Kelola Menu';
                                 if (mysqli_num_rows($result_regular) > 0) {
                                     while ($row = mysqli_fetch_assoc($result_regular)) {
                                         echo '<tr>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['id']) . '</td>';
+                                        echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['user_id']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['nama_menu']) . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
                                         echo '<td class="border border-gray-300 px-4 py-2">' . htmlspecialchars($row['stock']) . '</td>';
@@ -345,7 +351,7 @@ $page_title = 'Kelola Menu';
                                         echo '</tr>';
                                     }
                                 } else {
-                                    echo '<tr><td colspan="4" class="text-center py-4">Tidak ada menu biasa.</td></tr>';
+                                    echo '<tr><td colspan="6" class="text-center py-4">Tidak ada menu biasa.</td></tr>';
                                 }
                                 ?>
                             </tbody>
