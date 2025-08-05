@@ -223,6 +223,11 @@ $page_title = 'Kelola Menu';
                             </div>
                         <?php endif; ?>
 
+                        <div>
+                            <label class="block mb-1">User Id</label>
+                            <input type="text" name="id" required placeholder="Masukkan Id" value="<?php echo $edit_mode ? htmlspecialchars($edit_data['id']) : ''; ?>" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
+                        </div>
+
                         <div class="md:col-span-2">
                             <label class="block mb-1">Upload Foto Menu</label>
                             <input type="file" name="photo" class="w-full border px-3 py-2 rounded">
