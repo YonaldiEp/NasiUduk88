@@ -89,7 +89,7 @@ $page_title = 'Dashboard';
             <main class="flex-1 mt-20 p-6 overflow-y-auto">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <div class="bg-white shadow p-4 rounded-lg">
-                        <h4 class="text-lg font-semibold text-gray-600">Total Admin</h4>
+                        <h4 class="text-lg font-semibold text-gray-600">Total Pengguna</h4>
                         <p class="text-2xl font-bold"><?php echo $total_users; ?></p>
                     </div>
                     <div class="bg-white shadow p-4 rounded-lg">
@@ -97,7 +97,7 @@ $page_title = 'Dashboard';
                         <p class="text-2xl font-bold"><?php echo $total_menus; ?></p>
                     </div>
                     <div class="bg-white shadow p-4 rounded-lg">
-                        <h4 class="text-lg font-semibold text-gray-600">Admin Terbaru</h4>
+                        <h4 class="text-lg font-semibold text-gray-600">Pengguna Terbaru</h4>
                         <p class="text-xl font-bold truncate" title="<?php echo htmlspecialchars($last_activity_user); ?>"><?php echo htmlspecialchars($last_activity_user); ?></p>
                     </div>
                 </div>
