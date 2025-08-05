@@ -217,7 +217,10 @@ $page_title = 'Kelola Menu';
                     <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                         <?php if ($edit_mode): ?>
-                            <input type="hidden" name="id" value="<?php echo $edit_data['id']; ?>">
+                            <div>
+                                <label class="block mb-1">User Id</label>
+                                <input type="text" name="id" required placeholder="Masukkan Id" value="<?php echo $edit_mode ? htmlspecialchars($edit_data['id']) : ''; ?>" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500">
+                            </div>
                         <?php endif; ?>
 
                         <div class="md:col-span-2">
@@ -352,4 +355,5 @@ $page_title = 'Kelola Menu';
     </div>
     <script src="../scripts.js"></script>
 </body>
+
 </html>
